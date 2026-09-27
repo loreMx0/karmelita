@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>KarmelitaTweaksFinalv1.10.1</AssemblyName>
+    <RootNamespace>KarmelitaTweaks</RootNamespace>
+    <Version>1.10.1</Version>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>embedded</DebugType>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="**/*.cs" />
+    <Compile Include="KarmelitaTweaks.cs" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <SilksongDir Condition="'$(SilksongDir)' == ''">$(SILKSONG_DIR)</SilksongDir>
+    <SilksongDir Condition="'$(SilksongDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Hollow Knight Silksong</SilksongDir>
+    <SilksongManagedDir>$(SilksongDir)\Silksong_Data\Managed</SilksongManagedDir>
+    <BepInExDir>$(SilksongDir)\BepInEx</BepInExDir>
+    <BepInExCoreDir>$(BepInExDir)\core</BepInExCoreDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp"><HintPath>$(SilksongManagedDir)\Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PlayMaker"><HintPath>$(SilksongManagedDir)\PlayMaker.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(SilksongManagedDir)\UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(SilksongManagedDir)\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.AudioModule"><HintPath>$(SilksongManagedDir)\UnityEngine.AudioModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="BepInEx"><HintPath>$(BepInExCoreDir)\BepInEx.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(BepInExCoreDir)\0Harmony.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="Exists('$(BepInExDir)\plugins')">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BepInExDir)\plugins" />
+    <Message Importance="high" Text="Copied $(TargetFileName) -> $(BepInExDir)\plugins" />
+  </Target>
+
+</Project>
